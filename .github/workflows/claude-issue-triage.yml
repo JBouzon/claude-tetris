@@ -1,0 +1,53 @@
+name: Claude Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Triage issue with Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Estás analizando el issue #${{ github.event.issue.number }} de este repositorio
+            (un juego de Tetris en JavaScript vanilla — ver CLAUDE.md para la arquitectura).
+
+            Tu tarea:
+            1. Ejecuta `gh label list` para ver los labels disponibles en el repo. Usa
+               ÚNICAMENTE labels que ya existan (no crees labels nuevos).
+            2. Según el título y la descripción del issue, aplica el/los labels que
+               correspondan con `gh issue edit ${{ github.event.issue.number }} --add-label "..."`.
+               No apliques labels que ya estén puestos.
+            3. Ejecuta `gh issue view ${{ github.event.issue.number }} --comments` para revisar
+               si ya existe un comentario de diagnóstico automático (empieza con el encabezado
+               "## Diagnóstico automático"). Si ya existe y el issue no ha cambiado de forma
+               sustancial, no publiques uno nuevo.
+            4. Si no existe diagnóstico previo (o el issue cambió sustancialmente), publica un
+               comentario nuevo con `gh issue comment ${{ github.event.issue.number }} --body "..."`
+               que empiece con el encabezado "## Diagnóstico automático" y contenga:
+               - **Resumen**: qué pide o reporta el issue en una o dos frases.
+               - **Diagnóstico**: causa probable (si es un bug) o alcance funcional (si es una
+                 mejora), en base a la arquitectura descrita en CLAUDE.md (board/pieza actual,
+                 colisiones, rotación, game loop, etc.).
+               - **Archivos/áreas afectadas**: qué partes de `game.js`, `index.html` o `style.css`
+                 probablemente hay que tocar.
+               - **Enfoque sugerido**: pasos de alto nivel para implementar la solución, sin
+                 escribir código todavía.
+
+            No modifiques el título ni el cuerpo original del issue. No cierres el issue.
+          claude_args: |
+            --allowedTools "Bash(gh label list:*),Bash(gh issue edit:*),Bash(gh issue comment:*),Bash(gh issue view:*)"
