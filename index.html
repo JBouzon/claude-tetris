@@ -11,12 +11,23 @@
     <header class="game-header">
       <h1 class="game-title">TETRIS</h1>
       <p class="game-subtitle">JBOUZON</p>
-      <label class="theme-toggle" for="theme-switch">
-        <span class="theme-toggle-icon">🌙</span>
-        <input type="checkbox" id="theme-switch" />
-        <span class="theme-toggle-slider"></span>
-        <span class="theme-toggle-icon">☀️</span>
-      </label>
+      <div class="header-controls">
+        <label class="theme-toggle" for="theme-switch">
+          <span class="theme-toggle-icon">🌙</span>
+          <input type="checkbox" id="theme-switch" />
+          <span class="theme-toggle-slider"></span>
+          <span class="theme-toggle-icon">☀️</span>
+        </label>
+        <label class="skin-select-wrap" for="skin-select">
+          <span class="skin-select-icon">🎨</span>
+          <select id="skin-select">
+            <option value="retro">Retro</option>
+            <option value="neon">Neon</option>
+            <option value="pastel">Pastel</option>
+            <option value="pixel">Pixel art</option>
+          </select>
+        </label>
+      </div>
     </header>
 
     <div class="game-container">

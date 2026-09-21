@@ -86,12 +86,20 @@ body {
   margin-top: 4px;
 }
 
+/* ---- Header controls ---- */
+.header-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
 /* ---- Theme toggle ---- */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 12px;
   cursor: pointer;
 }
 
@@ -127,6 +135,35 @@ body {
 
 .theme-toggle input:checked + .theme-toggle-slider::before {
   transform: translateX(20px);
+}
+
+/* ---- Skin selector ---- */
+.skin-select-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.skin-select-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+#skin-select {
+  background: var(--kbd-bg);
+  border: 1px solid var(--kbd-border);
+  color: var(--kbd-text);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+#skin-select:focus {
+  outline: 1px solid var(--value-color);
 }
 
 .game-container {
