@@ -44,6 +44,7 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Niveles** que aumentan cada 10 líneas y aceleran la caída.
 - **Pausa** y **Game Over** con opción de reinicio.
 - **Toggle de tema claro/oscuro**: el juego inicia en modo oscuro por defecto; un switch en el encabezado permite cambiar a modo claro, y la preferencia se guarda en `localStorage`.
+- **Selector de skins visuales** (`#skin-select`): Retro, Neon, Pastel y Pixel art. Cambia en vivo el renderizado de las piezas en el tablero y en la vista previa (colores, brillo neón, esquinas redondeadas o textura pixelada), sin recargar la página. La preferencia se guarda en `localStorage`.
 
 ---
 
@@ -101,6 +102,7 @@ Define la estructura visual:
 - Un `<canvas id="board">` de **300 × 600** píxeles donde se renderiza el tablero.
 - Un panel lateral con `SCORE`, `LINES`, `LEVEL`, vista de la siguiente pieza y la lista de controles.
 - Un switch de tema (`#theme-switch`) en el encabezado para alternar entre modo oscuro y claro.
+- Un selector de skin (`#skin-select`) en el encabezado con las opciones Retro, Neon, Pastel y Pixel art.
 - Un overlay para los estados **PAUSA** y **GAME OVER**.
 
 ### 2. `style.css`
@@ -121,6 +123,7 @@ Contiene toda la lógica del juego. A grandes rasgos:
 - **Nivel y velocidad**: el nivel sube cada 10 líneas; la velocidad de caída se calcula como `max(100, 1000 − (level − 1) × 90)` milisegundos.
 - **Ghost piece** (`ghostY`): proyecta la posición final de la pieza actual hacia abajo y la dibuja con `globalAlpha = 0.2`.
 - **Tema claro/oscuro** (`applyTheme`, `initTheme`): alterna el atributo `data-theme` en `<body>`, persiste la preferencia en `localStorage` (por defecto modo oscuro) y redibuja el tablero para que el color de la cuadrícula (leído de la variable CSS `--grid-line`) coincida con el tema activo.
+- **Skins visuales** (`applySkin`, `initSkin`, `SKIN_COLORS`): cada skin define su propia tabla de colores (`retro`, `neon`, `pastel`, `pixel`) y `drawBlock` cambia de rama según el skin activo — relleno plano con brillo superior (retro/pixel, esta última con una textura tipo tablero de ajedrez encima), resplandor con `shadowBlur` sobre fondo negro (neon), o esquinas redondeadas con `roundRect`/`arcTo` (pastel). La preferencia se guarda en `localStorage` y se aplica al instante sin recargar.
 
 ### Flujo del juego
 
