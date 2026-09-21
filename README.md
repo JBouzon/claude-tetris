@@ -44,6 +44,7 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Niveles** que aumentan cada 10 líneas y aceleran la caída.
 - **Pausa** y **Game Over** con opción de reinicio.
 - **Toggle de tema claro/oscuro**: el juego inicia en modo oscuro por defecto; un switch en el encabezado permite cambiar a modo claro, y la preferencia se guarda en `localStorage`.
+- **Tabla de récords local**: guarda en `localStorage` el top 5 de puntuaciones (nombre, puntuación, líneas y nivel), además del mejor combo y las mejores líneas conseguidas en una sola partida. Se muestra en el panel lateral desde el inicio y también en la pantalla de Game Over, donde se resalta la fila recién añadida. Si la partida termina con una puntuación suficiente para entrar al top 5, se pide el nombre del jugador antes de guardarla. Un botón "Reiniciar récords" permite borrar todo el historial (con confirmación).
 
 ---
 
@@ -99,7 +100,7 @@ El juego se compone de tres archivos que cooperan:
 Define la estructura visual:
 
 - Un `<canvas id="board">` de **300 × 600** píxeles donde se renderiza el tablero.
-- Un panel lateral con `SCORE`, `LINES`, `LEVEL`, vista de la siguiente pieza y la lista de controles.
+- Un panel lateral con `SCORE`, `LINES`, `LEVEL`, vista de la siguiente pieza, la lista de controles, el mejor combo, las mejores líneas y la tabla de récords (top 5) con un botón para reiniciarlos.
 - Un switch de tema (`#theme-switch`) en el encabezado para alternar entre modo oscuro y claro.
 - Un overlay para los estados **PAUSA** y **GAME OVER**.
 
@@ -121,6 +122,8 @@ Contiene toda la lógica del juego. A grandes rasgos:
 - **Nivel y velocidad**: el nivel sube cada 10 líneas; la velocidad de caída se calcula como `max(100, 1000 − (level − 1) × 90)` milisegundos.
 - **Ghost piece** (`ghostY`): proyecta la posición final de la pieza actual hacia abajo y la dibuja con `globalAlpha = 0.2`.
 - **Tema claro/oscuro** (`applyTheme`, `initTheme`): alterna el atributo `data-theme` en `<body>`, persiste la preferencia en `localStorage` (por defecto modo oscuro) y redibuja el tablero para que el color de la cuadrícula (leído de la variable CSS `--grid-line`) coincida con el tema activo.
+- **Combo** (`combo`, `maxCombo`): cada vez que `lockPiece()` limpia al menos una línea, el combo aumenta; si no limpia ninguna, se reinicia a 0. `maxCombo` guarda el mejor combo de la partida actual.
+- **Récords locales** (`getLeaderboard`, `saveLeaderboardData`, `getBestCombo`/`setBestCombo`, `getBestLines`/`setBestLines`, `renderLeaderboard`): persisten en `localStorage` bajo las claves `tetris-leaderboard` (array top 5 de `{name, score, lines, level}`), `tetris-best-combo` y `tetris-best-lines`. Al terminar la partida (`endGame`), se comparan el combo máximo y las líneas totales contra los mejores históricos, y si la puntuación entra en el top 5 se muestra un campo para introducir el nombre (`saveScore`). `renderLeaderboard()` dibuja la misma lista tanto en el panel lateral como en el overlay de Game Over.
 
 ### Flujo del juego
 
