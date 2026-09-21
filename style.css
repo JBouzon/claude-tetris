@@ -218,12 +218,15 @@ kbd {
   border-radius: 4px;
 }
 
-.overlay.hidden {
-  display: none;
-}
-
 .overlay-box {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+#gameover-content {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -243,7 +246,7 @@ kbd {
   color: var(--value-color);
 }
 
-#restart-btn {
+.overlay-btn {
   margin-top: 8px;
   background: var(--btn-bg);
   color: var(--btn-text);
@@ -257,6 +260,80 @@ kbd {
   transition: background 0.15s;
 }
 
-#restart-btn:hover {
+.overlay-btn:hover {
   background: var(--btn-hover-bg);
+}
+
+/* ---- Pause menu ---- */
+.hidden {
+  display: none;
+}
+
+#pause-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 220px;
+}
+
+.pause-menu-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--overlay-title-color);
+}
+
+.pause-menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.pause-menu-actions .overlay-btn {
+  margin-top: 0;
+  width: 100%;
+}
+
+#pause-controls {
+  width: 100%;
+  align-items: center;
+}
+
+#pause-controls ul {
+  align-items: center;
+}
+
+.pause-menu-level {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.pause-menu-level label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--label-color);
+  font-weight: 600;
+}
+
+#start-level-select {
+  background: var(--kbd-bg);
+  border: 1px solid var(--kbd-border);
+  color: var(--kbd-text);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.pause-menu-hint {
+  font-size: 11px;
+  color: var(--control-text);
+  text-align: center;
 }
